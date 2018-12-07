@@ -1,0 +1,123 @@
+﻿
+<html>
+
+<head>
+<title>test page</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<script type="text/javascript">
+function getpredata()
+{
+	page = document.getElementById("active").innerHTML;
+	if(page<=10 && page>1)
+	{
+		page = parseInt(page) - 1;
+	}
+	else
+	{
+		page = 1;
+	}
+	document.getElementById("active").innerHTML = page;
+	//alert(page);
+	$.get("getdata.php?page="+page,function(result){
+		result = unescape(result.replace(/\\u/g, '%u'));
+		content = "<tr id='header_row'><td>班级</td><td>性别</td><td>专业</td><td>姓名</td><td>学号</td></tr>";
+		//alert(result);
+		
+		var result = eval('('+result+')');
+		var result = result['result'];
+	
+		//alert(result.length);
+		for (var i = 0; i < result.length; i++) {
+			
+			content = content + "<tr id='total_row'><td>"+result[i].class_num+"</td><td>"+result[i].gender+"</td><td>"+result[i].major+"</td><td>"+result[i].name+"</td><td>"+result[i].student_num+"</td></tr>";
+			
+		}
+
+
+		document.getElementById("result_table").innerHTML = content;
+	});
+}
+function getnextdata()
+{
+	page = document.getElementById("active").innerHTML;
+	if(page<10 && page>0)
+	{
+		page = parseInt(page) + 1;
+	}
+	else
+	{
+		page = 1;
+	}
+	document.getElementById("active").innerHTML = page;
+	//alert(page);
+	//alert(page);
+	$.get("getdata.php?page="+page,function(result){
+		result = unescape(result.replace(/\\u/g, '%u'));
+		content = "<tr id='header_row'><td>班级</td><td>性别</td><td>专业</td><td>姓名</td><td>学号</td></tr>";
+		//alert(result);
+		
+		var result = eval('('+result+')');
+		var result = result['result'];
+	
+		//alert(result.length);
+		for (var i = 0; i < result.length; i++) {
+			
+			content = content + "<tr id='total_row'><td>"+result[i].class_num+"</td><td>"+result[i].gender+"</td><td>"+result[i].major+"</td><td>"+result[i].name+"</td><td>"+result[i].student_num+"</td></tr>";
+			
+		}
+
+
+		document.getElementById("result_table").innerHTML = content;
+	});
+}
+</script>
+<style>
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination li {display: inline;}
+
+ul.pagination li a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+#result_table {
+    width: 50%;
+    border-collapse: collapse;
+    border: 1px solid #777;
+}
+#header_row {
+    font-weight: bold;
+    color: white;
+    background-color: #777;
+}
+#result_table td {
+    border: 1px solid #777;
+    padding: 2px;
+}
+#total_row  { font-weight: bold; }
+</style>
+<body id="viewDiv">
+
+
+<table id='result_table'>
+
+</table>
+
+<ul class="pagination">
+  <li><a href="#" onclick="getpredata()">«</a></li>
+  <li><a id="active" href="#">1</a></li>
+  <li><a href="#" onclick="getnextdata()">»</a></li>
+</ul>
+
+</body>
+
+</html>
